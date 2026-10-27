@@ -1,0 +1,82 @@
+# modified- preserved copy
+# ==============================================================================
+# Intevoris AI Solutions — Professional .gitignore
+# Prevents unnecessary, sensitive, or generated files from being committed to Git
+# ==============================================================================
+
+# AI Agent Local Directories & Skill Caches
+.agents/
+.gemini/
+
+# Node Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnp
+.pnp.js
+
+# Next.js Build Output & Caches
+.next/
+out/
+build/
+dist/
+
+# SQLite Local Database & Write-Ahead Logs
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+data/*.sqlite
+data/*.sqlite3
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# Testing & Coverage Reports
+coverage/
+.nyc_output/
+*.lcov
+
+# TypeScript Build Info & Next Types
+*.tsbuildinfo
+next-env.d.ts
+
+# Python Caches & Virtual Environments (Used by local tool scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE & Editor Configuration
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Vercel Deployment Metadata
+.vercel/

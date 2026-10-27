@@ -1,0 +1,51 @@
+/* // modified- preserved copy */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Cinzel:wght@600;700;800&family=Outfit:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, Cambria, serif;
+    --font-display: 'Cinzel', serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #F8FAFC;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(226, 232, 240, 0.4) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(219, 234, 254, 0.3) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(241, 245, 249, 0.6) 0px, transparent 50%);
+    background-attachment: fixed;
+    @apply text-slate-900 antialiased min-h-screen flex flex-col;
+  }
+
+  /* Accessible classic focus rings */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-slate-900 ring-offset-2 ring-offset-white;
+  }
+}
+
+.font-serif-title {
+  font-family: var(--font-serif);
+}
+
+.font-display-brand {
+  font-family: var(--font-display);
+}
+
+/* Subtle classic luxury shadows */
+.classic-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.classic-card:hover {
+  border-color: rgba(203, 213, 225, 0.9);
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+}
