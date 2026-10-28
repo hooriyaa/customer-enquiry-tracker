@@ -11,21 +11,21 @@ export function IntevorisLogo({ variant = "light", size = "md" }: LogoProps) {
   const isDark = variant === "dark";
 
   const iconSizes = {
-    sm: "w-7 h-7 sm:w-8 sm:h-8",
-    md: "w-8 h-8 sm:w-10 sm:h-10",
-    lg: "w-10 h-10 sm:w-12 sm:h-12",
+    sm: "w-6 h-6 sm:w-8 sm:h-8",
+    md: "w-7 h-7 sm:w-9 sm:h-9",
+    lg: "w-9 h-9 sm:w-11 sm:h-11",
   };
 
   const titleSizes = {
     sm: "text-xs sm:text-sm",
-    md: "text-sm sm:text-base md:text-lg",
-    lg: "text-lg sm:text-xl md:text-2xl",
+    md: "text-xs sm:text-base md:text-lg",
+    lg: "text-base sm:text-lg md:text-xl",
   };
 
   return (
-    <div className="flex items-center gap-2.5 sm:gap-3.5 group cursor-pointer min-w-0">
+    <div className="flex items-center gap-2 sm:gap-3 group cursor-pointer min-w-0">
       {/* Bespoke Classic Insignia */}
-      <div className={`relative ${iconSizes[size]} shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 p-2 shadow-md shadow-slate-950/15 border border-slate-700/50 group-hover:border-amber-500/40 transition-all duration-300`}>
+      <div className={`relative ${iconSizes[size]} shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 p-1.5 sm:p-2 shadow-md shadow-slate-950/15 border border-slate-700/50 group-hover:border-amber-500/40 transition-all duration-300`}>
         {/* Subtle gold inner accent glow */}
         <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-transparent via-amber-500/10 to-transparent opacity-80 pointer-events-none" />
         
@@ -82,13 +82,13 @@ export function IntevorisLogo({ variant = "light", size = "md" }: LogoProps) {
       <div className="flex flex-col min-w-0">
         <div className="flex items-center gap-1.5 sm:gap-2">
           <span
-            className={`font-display-brand ${titleSizes[size]} font-bold tracking-[0.12em] sm:tracking-[0.18em] uppercase ${
+            className={`font-display-brand ${titleSizes[size]} font-bold tracking-[0.1em] sm:tracking-[0.16em] uppercase shrink-0 ${
               isDark ? "text-white" : "text-slate-900"
             }`}
           >
             Intevoris
           </span>
-          <span className="hidden min-[360px]:inline-block text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/30 shrink-0">
+          <span className="hidden sm:inline-block text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/30 shrink-0">
             AI Solutions
           </span>
         </div>

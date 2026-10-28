@@ -182,16 +182,16 @@ export function Dashboard() {
   }
 
   return (
-    <div className="space-y-6 sm:space-y-7">
+    <div className="space-y-5 sm:space-y-6 w-full min-w-0 max-w-full">
       {/* Top Header & Executive Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3.5 sm:gap-4 pb-2 border-b border-slate-200/90">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4 pb-2 border-b border-slate-200/90 w-full min-w-0">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5">
-            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-500/10 px-2 sm:px-2.5 py-0.5 rounded-full border border-amber-500/20">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-500/10 px-2 sm:px-2.5 py-0.5 rounded-full border border-amber-500/20 shrink-0">
               Executive Triage Control
             </span>
             <span className="text-xs text-slate-400">•</span>
-            <span className="text-[11px] sm:text-xs text-slate-500 font-medium font-mono">SQLite WAL Feed</span>
+            <span className="text-[10px] sm:text-xs text-slate-500 font-medium font-mono shrink-0">SQLite WAL Feed</span>
           </div>
           <h1 className="font-serif-title text-xl sm:text-2xl lg:text-3xl font-bold text-slate-950 tracking-tight">
             Customer Enquiry Dashboard
@@ -206,7 +206,7 @@ export function Dashboard() {
             type="button"
             onClick={() => fetchEnquiries(true)}
             disabled={isRefreshing}
-            className="inline-flex items-center justify-center gap-2 px-3 sm:px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl text-xs font-semibold shadow-xs hover:shadow transition-all duration-150 cursor-pointer disabled:opacity-50 min-h-[40px]"
+            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-2 sm:py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl text-xs font-semibold shadow-2xs hover:shadow-xs transition-all duration-150 cursor-pointer disabled:opacity-50 min-h-[38px] sm:min-h-[40px]"
             title="Refresh database records"
           >
             <RefreshCw className={`w-3.5 h-3.5 shrink-0 ${isRefreshing ? "animate-spin text-amber-600" : "text-slate-500"}`} />
@@ -215,7 +215,7 @@ export function Dashboard() {
 
           <Link
             href="/submit"
-            className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all duration-150 cursor-pointer min-h-[40px]"
+            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all duration-150 cursor-pointer min-h-[38px] sm:min-h-[40px]"
           >
             <PlusCircle className="w-4 h-4 text-amber-400 shrink-0" />
             <span>New Enquiry</span>
@@ -254,16 +254,16 @@ export function Dashboard() {
       )}
 
       {/* Filter and Search Controls Bar */}
-      <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+      <div className="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between w-full min-w-0">
         {/* Search Input */}
-        <div className="relative flex-1 w-full md:max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="relative flex-1 w-full lg:max-w-md min-w-0">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none shrink-0" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by customer name, email, or message..."
-            className="w-full pl-9 pr-12 py-2.5 rounded-xl border border-slate-300/80 bg-slate-50/50 hover:bg-white text-sm text-slate-900 placeholder-slate-400 transition-colors focus:bg-white focus:border-slate-900 focus:ring-slate-900 min-h-[42px]"
+            placeholder="Search name, email, or message..."
+            className="w-full pl-9 pr-10 py-2 sm:py-2.5 rounded-xl border border-slate-300/80 bg-slate-50/50 hover:bg-white text-xs sm:text-sm text-slate-900 placeholder-slate-400 transition-colors focus:bg-white focus:border-slate-900 focus:ring-slate-900 min-h-[40px]"
           />
           <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] text-slate-400 font-mono bg-white border border-slate-200 rounded absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
             /
@@ -271,13 +271,13 @@ export function Dashboard() {
         </div>
 
         {/* Filter Dropdowns */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:flex md:flex-wrap md:items-center gap-2 w-full md:w-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:flex lg:flex-wrap lg:items-center gap-2 w-full lg:w-auto min-w-0">
           {/* Status Filter */}
-          <div className="w-full md:w-auto">
+          <div className="w-full lg:w-auto min-w-0">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as BusinessStatus | "ALL")}
-              className="w-full md:w-auto px-3 py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[42px]"
+              className="w-full lg:w-auto px-3 py-2 sm:py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[40px]"
               aria-label="Filter by business status"
             >
               <option value="ALL">All Statuses</option>
@@ -290,11 +290,11 @@ export function Dashboard() {
           </div>
 
           {/* Category Filter */}
-          <div className="w-full md:w-auto">
+          <div className="w-full lg:w-auto min-w-0">
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value as EnquiryCategory | "ALL")}
-              className="w-full md:w-auto px-3 py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[42px]"
+              className="w-full lg:w-auto px-3 py-2 sm:py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[40px]"
               aria-label="Filter by category"
             >
               <option value="ALL">All Categories</option>
@@ -307,11 +307,11 @@ export function Dashboard() {
           </div>
 
           {/* State Filter */}
-          <div className="w-full md:w-auto">
+          <div className="w-full lg:w-auto min-w-0">
             <select
               value={stateFilter}
               onChange={(e) => setStateFilter(e.target.value as CategorizationState | "ALL")}
-              className="w-full md:w-auto px-3 py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[42px]"
+              className="w-full lg:w-auto px-3 py-2 sm:py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[40px]"
               aria-label="Filter by AI categorization state"
             >
               <option value="ALL">All AI States</option>
@@ -328,7 +328,7 @@ export function Dashboard() {
             <button
               type="button"
               onClick={handleResetFilters}
-              className="w-full sm:col-span-3 md:w-auto text-xs text-amber-700 hover:text-amber-900 font-bold px-3 py-2 rounded-lg hover:bg-amber-50 transition-colors cursor-pointer text-center min-h-[38px] flex items-center justify-center"
+              className="w-full sm:col-span-3 lg:w-auto text-xs text-amber-700 hover:text-amber-900 font-bold px-3 py-2 rounded-lg hover:bg-amber-50 transition-colors cursor-pointer text-center min-h-[38px] flex items-center justify-center"
             >
               Reset Filters
             </button>
@@ -337,9 +337,9 @@ export function Dashboard() {
       </div>
 
       {/* Enquiries Listing Container */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden w-full min-w-0 max-w-full">
         {/* Header Bar */}
-        <div className="px-4 sm:px-5 py-3 sm:py-3.5 border-b border-slate-200/90 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 bg-slate-50/70">
+        <div className="px-3.5 sm:px-5 py-3 sm:py-3.5 border-b border-slate-200/90 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 bg-slate-50/70 min-w-0">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-800">
               {enquiries.length} {enquiries.length === 1 ? "Customer Record" : "Customer Records"}
@@ -385,8 +385,8 @@ export function Dashboard() {
         {/* Desktop Table View */}
         {!isLoading && enquiries.length > 0 && (
           <>
-            <div className="hidden lg:block overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+            <div className="hidden lg:block w-full max-w-full overflow-x-auto min-w-0">
+              <table className="w-full min-w-[880px] text-left border-collapse">
                 {/* Executive Classic Table Header */}
                 <thead className="bg-[#0F172A] text-slate-200">
                   <tr className="text-[11px] font-bold uppercase tracking-wider">
@@ -506,9 +506,9 @@ export function Dashboard() {
             </div>
 
             {/* Mobile & Tablet Card View */}
-            <div className="lg:hidden divide-y divide-slate-100">
+            <div className="lg:hidden divide-y divide-slate-100 min-w-0 w-full">
               {enquiries.map((enquiry) => (
-                <div key={enquiry.id} className="p-3.5 sm:p-5 space-y-3 hover:bg-slate-50/60 transition-colors">
+                <div key={enquiry.id} className="p-3.5 sm:p-5 space-y-3 hover:bg-slate-50/60 transition-colors min-w-0 w-full">
                   {/* Customer Header */}
                   <div className="flex items-start justify-between gap-2 min-w-0">
                     <div className="flex items-center gap-2.5 min-w-0">
@@ -542,15 +542,15 @@ export function Dashboard() {
                   </p>
 
                   {/* Badges & Operational Actions */}
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-1 min-w-0">
                     {/* Triage Badges */}
-                    <div className="flex flex-wrap items-center gap-1.5">
+                    <div className="flex flex-wrap items-center gap-1.5 min-w-0">
                       <CategoryBadge category={enquiry.category} size="sm" />
                       <CategorizationStateBadge state={enquiry.categorizationState} size="sm" />
                     </div>
 
                     {/* Operational Controls */}
-                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto justify-end">
+                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto justify-end min-w-0">
                       {enquiry.categorizationState === "Failed" && (
                         <button
                           type="button"
@@ -568,7 +568,7 @@ export function Dashboard() {
                         value={enquiry.status}
                         disabled={updatingStatusId === enquiry.id}
                         onChange={(e) => handleStatusChange(enquiry.id, e.target.value as BusinessStatus)}
-                        className={`flex-1 sm:flex-initial text-xs font-bold rounded-lg px-2.5 py-1.5 border transition-colors cursor-pointer min-h-[36px] min-w-[110px] ${
+                        className={`flex-1 sm:flex-initial text-xs font-bold rounded-lg px-2.5 py-1.5 border transition-colors cursor-pointer min-h-[36px] min-w-[100px] max-w-full ${
                           enquiry.status === "New"
                             ? "bg-blue-50 text-blue-900 border-blue-200"
                             : enquiry.status === "In Progress"
