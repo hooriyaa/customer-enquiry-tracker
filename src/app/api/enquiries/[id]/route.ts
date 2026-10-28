@@ -1,3 +1,4 @@
+// modified- preserved copy
 import { NextRequest, NextResponse } from "next/server";
 import { updateStatusSchema } from "@/lib/types";
 import { getEnquiryById, updateEnquiryStatus } from "@/lib/db";
@@ -9,8 +10,9 @@ interface RouteParams {
 }
 
 export async function GET(req: NextRequest, { params }: RouteParams) {
+  const { id } = params;
+
   try {
-    const { id } = params;
     const enquiry = getEnquiryById(id);
 
     if (!enquiry) {
@@ -28,11 +30,11 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       enquiry,
     });
   } catch (error: unknown) {
+    console.error(`[API Error] Failed to retrieve enquiry '${id}':`, error);
     return NextResponse.json(
       {
         success: false,
         error: "Failed to retrieve enquiry",
-        details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     );
@@ -40,9 +42,9 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
-  try {
-    const { id } = params;
+  const { id } = params;
 
+  try {
     const existing = getEnquiryById(id);
     if (!existing) {
       return NextResponse.json(
@@ -96,12 +98,11 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
       message: `Status updated to '${parseResult.data.status}'`,
     });
   } catch (error: unknown) {
-    console.error("Error updating enquiry status:", error);
+    console.error(`[API Error] Failed to update enquiry status '${id}':`, error);
     return NextResponse.json(
       {
         success: false,
         error: "Failed to update enquiry status",
-        details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     );

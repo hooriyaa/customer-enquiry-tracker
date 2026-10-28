@@ -1,3 +1,4 @@
+// modified- preserved copy
 import { NextRequest, NextResponse } from "next/server";
 import {
   createEnquirySchema,
@@ -49,12 +50,11 @@ export async function GET(req: NextRequest) {
       metrics,
     });
   } catch (error: unknown) {
-    console.error("Error fetching enquiries:", error);
+    console.error("[API Error] Failed to retrieve enquiries:", error);
     return NextResponse.json(
       {
         success: false,
         error: "Failed to retrieve enquiries",
-        details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     );
@@ -115,12 +115,11 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error: unknown) {
-    console.error("Error creating enquiry:", error);
+    console.error("[API Error] Failed to process enquiry creation:", error);
     return NextResponse.json(
       {
         success: false,
         error: "Failed to process enquiry",
-        details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     );

@@ -193,12 +193,32 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ### 4. Retry AI Categorization
 - **Endpoint**: `POST /api/enquiries/:id/retry`
-- **Response** (`200 OK`):
+- **Validation Rules**:
+  - Only enquiries with `categorizationState === "Failed"` are eligible for retry.
+  - Returns `400 Bad Request` if enquiry is already `Completed` or `Pending`.
+  - Atomically claims the record (`Failed` -> `Pending`) to prevent concurrent race conditions (returns `409 Conflict` if already in progress).
+  - Strictly preserves existing business `status` (`New`, `In Progress`, `Resolved`).
+  - Zero record duplication: updates the existing SQLite record in place.
+- **Success Response** (`200 OK`):
 ```json
 {
   "success": true,
-  "enquiry": { "id": "...", "categorizationState": "Completed", "category": "Sales", ... },
-  "message": "Categorization succeeded on retry: categorized as 'Sales'"
+  "enquiry": {
+    "id": "c1f7f50a-9d22-4411-9a74-9b244951b142",
+    "name": "Alex Rivera",
+    "email": "alex.rivera@enterprise.org",
+    "status": "In Progress",
+    "category": "Billing",
+    "categorizationState": "Completed"
+  },
+  "message": "Categorization succeeded on retry: categorized as 'Billing'"
+}
+```
+- **Rejection Response (Already Completed)** (`400 Bad Request`):
+```json
+{
+  "success": false,
+  "error": "Cannot retry categorization: Enquiry is already completed with category 'Billing'"
 }
 ```
 
@@ -210,36 +230,40 @@ The mock service supports built-in simulation markers for testing resilience:
 
 | Marker | Behavior on 1st Call | Behavior on Retry |
 |---|---|---|
-| `[FAIL_ONCE]` | Returns `500 Internal Server Error`. Enquiry is saved with `categorizationState: 'Failed'`. | Calling retry re-executes categorization, succeeds, and marks `Completed`. |
-| `[INVALID_ONCE]` | Returns `{ "category": "INVALID_UNRECOGNIZED_CATEGORY" }`. Backend rejects unknown category and marks `Failed`. | Calling retry returns a valid category and marks `Completed`. |
+| `[FAIL_ONCE]` | Returns `503 Service Unavailable`. Enquiry is saved with `categorizationState: 'Failed'`. | Calling retry re-executes categorization, succeeds, and marks `Completed` (`Billing`). |
+| `[INVALID_ONCE]` | Returns `{ "category": "Unexpected" }`. Backend rejects unknown category and marks `Failed`. | Calling retry returns a valid category and marks `Completed` (`Support`). |
 
 ---
 
 ## 8. Automated Verification Suite
 
-Run the full automated test suite covering all 17 scenarios:
+Run the full automated test suite covering all 21 scenarios:
 ```bash
 npm test
 ```
 
-### Verified Scenarios:
+### Verified Scenarios (21 / 21 Passed):
 1. `✓` Valid enquiry creation with SQLite persistence.
-2. `✓` Rejection of missing required fields (name, email, message).
-3. `✓` Rejection of invalid email formats.
-4. `✓` Successful AI categorization into `Sales`, `Billing`, `Support`, `Other`.
-5. `✓` Safe fallback when AI microservice is offline (record kept intact with `Failed` state).
-6. `✓` Safe rejection of invalid categories returned by AI.
-7. `✓` Queryability of enquiries despite AI failures.
-8. `✓` Successful retry after temporary failure via `[FAIL_ONCE]`.
-9. `✓` Zero duplicate records during retry (record count stays constant).
-10. `✓` Preservation of record if retry fails again.
-11. `✓` Business status transitions (`New` -> `In Progress` -> `Resolved`).
-12. `✓` Rejection of invalid business statuses (e.g., `Draft`, `Closed`).
-13. `✓` Filter combinations (Status, Category, State, Search).
-14. `✓` Proper `404 Not Found` responses for unknown enquiry IDs.
-15. `✓` Persistence across database reconnects and process restarts.
-16. `✓` Recovery from `[INVALID_ONCE]` on retry.
-17. `✓` Real-time dashboard KPI metrics calculation.
+2. `✓` Rejection of missing/whitespace-only required fields (name, email, message).
+3. `✓` Strict rejection of malformed emails (`abc@gmail`, `hello@`, `user@@gmail.com`, `user name@gmail.com`).
+4. `✓` Acceptance of valid email addresses across diverse top-level and subdomains.
+5. `✓` Direct invalid API submission safety (zero SQLite records created).
+6. `✓` Successful AI categorization into `Sales`, `Billing`, `Support`, `Other`.
+7. `✓` Safe fallback when AI microservice is offline (record kept intact with `Failed` state).
+8. `✓` Safe rejection of invalid categories returned by AI.
+9. `✓` Queryability of enquiries despite AI failures.
+10. `✓` Successful retry after temporary failure via `[FAIL_ONCE]` (503 recovery).
+11. `✓` Zero duplicate records during retry (record count stays constant).
+12. `✓` Preservation of record if retry fails again.
+13. `✓` Business status transitions (`New` -> `In Progress` -> `Resolved`).
+14. `✓` Rejection of invalid business statuses (e.g., `Draft`, `Closed`).
+15. `✓` Filter combinations (Status, Category, State, Search).
+16. `✓` Proper `404 Not Found` responses for unknown enquiry IDs.
+17. `✓` Persistence across database reconnects and process restarts.
+18. `✓` Recovery from `[INVALID_ONCE]` (`Unexpected` category) on retry.
+19. `✓` Real-time dashboard KPI metrics calculation.
+20. `✓` Full-cycle AI timeout enforcement during slow streaming response body reading.
+21. `✓` Retry endpoint validation (`Failed`-only guard, rejection of `Completed`/`Pending`, concurrency claim lock).
 
 ---
 

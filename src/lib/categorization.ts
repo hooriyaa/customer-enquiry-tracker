@@ -41,14 +41,12 @@ export async function requestCategorization(
       signal: controller.signal,
     });
 
-    clearTimeout(timeoutId);
-
     if (!res.ok) {
       let errorBody = "";
       try {
         errorBody = await res.text();
       } catch {
-        // ignore text parsing error
+        // ignore text parsing error if aborted
       }
       return {
         success: false,
@@ -56,7 +54,17 @@ export async function requestCategorization(
       };
     }
 
-    const data = (await res.json()) as { category?: string };
+    // Read full body text while timeout signal remains active
+    const rawBody = await res.text();
+    let data: { category?: unknown };
+    try {
+      data = JSON.parse(rawBody);
+    } catch {
+      return {
+        success: false,
+        error: "Categorization service returned malformed response (invalid JSON)",
+      };
+    }
 
     if (!data || typeof data.category !== "string") {
       return {
@@ -78,18 +86,22 @@ export async function requestCategorization(
       category: trimmedCategory as EnquiryCategory,
     };
   } catch (err: unknown) {
-    clearTimeout(timeoutId);
-    const errorMessage =
-      err instanceof Error
-        ? err.name === "AbortError"
-          ? "Categorization request timed out after " + timeoutMs + "ms"
-          : err.message
-        : "Unknown network error";
+    const isTimeout =
+      (err instanceof Error && (err.name === "AbortError" || err.name === "TimeoutError")) ||
+      controller.signal.aborted;
+
+    const errorMessage = isTimeout
+      ? `Categorization request timed out after ${timeoutMs}ms`
+      : err instanceof Error
+      ? err.message
+      : "Unknown network error";
 
     return {
       success: false,
       error: `Failed to connect to categorization service: ${errorMessage}`,
     };
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 

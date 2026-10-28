@@ -1,3 +1,4 @@
+// modified- preserved copy
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
@@ -209,6 +210,25 @@ export function updateEnquiryCategorization(
   }
 
   return getEnquiryById(id, db);
+}
+
+/**
+ * Atomically transitions an enquiry from 'Failed' to 'Pending'.
+ * Prevents concurrent retries from executing simultaneously on the same record.
+ * Returns true if the record was in 'Failed' state and was successfully claimed.
+ */
+export function claimEnquiryForRetry(
+  id: string,
+  dbOverride?: Database.Database
+): boolean {
+  const db = dbOverride || getDatabase();
+  const stmt = db.prepare(`
+    UPDATE enquiries
+    SET categorizationState = 'Pending'
+    WHERE id = ? AND categorizationState = 'Failed'
+  `);
+  const info = stmt.run(id);
+  return info.changes > 0;
 }
 
 export function getDashboardMetrics(dbOverride?: Database.Database): DashboardMetrics {

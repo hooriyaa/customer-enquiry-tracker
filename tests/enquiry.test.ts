@@ -11,6 +11,7 @@ import {
   listEnquiries,
   updateEnquiryStatus,
   updateEnquiryCategorization,
+  claimEnquiryForRetry,
   getDashboardMetrics,
 } from "../src/lib/db";
 import {
@@ -654,6 +655,115 @@ describe("Intevoris Customer Enquiry Tracker — Automated Test Suite", () => {
     expect(secondAttempt.category).toBe("Support");
   });
 
+  // Scenario 17: AI timeout remains effective during slow response body reading
+  it("17. AI timeout remains effective during slow response body reading", async () => {
+    // Create a slow server that immediately sends 200 OK headers, but delays body response for 2000ms
+    const slowServer = http.createServer((req, res) => {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Transfer-Encoding": "chunked",
+      });
+      res.write('{"category":');
+      // Delay the rest of the body beyond the timeout threshold
+      setTimeout(() => {
+        try {
+          res.end('"Sales"}');
+        } catch {
+          // stream might be closed by abort
+        }
+      }, 2000);
+    });
+
+    const slowPort = 8798;
+    await new Promise<void>((resolve) => slowServer.listen(slowPort, "127.0.0.1", () => resolve()));
+
+    const enquiry = createEnquiry(
+      {
+        name: "Slow Body Test",
+        email: "slow@test.com",
+        message: "Testing timeout during streaming body",
+      },
+      testDb
+    );
+
+    const startTime = Date.now();
+    // Test with a tight 400ms timeout
+    const result = await executeCategorization(enquiry, {
+      dbOverride: testDb,
+      urlOverride: `http://127.0.0.1:${slowPort}/categorize`,
+      timeoutMs: 400,
+    });
+    const elapsed = Date.now() - startTime;
+
+    // Timeout must trigger well before the 2000ms server response completes
+    expect(elapsed).toBeLessThan(1500);
+    expect(result.categorizationState).toBe("Failed");
+    expect(result.category).toBeNull();
+
+    // Verify record in SQLite is safely marked as Failed
+    const fromDb = getEnquiryById(enquiry.id, testDb);
+    expect(fromDb?.categorizationState).toBe("Failed");
+
+    await new Promise<void>((resolve) => slowServer.close(() => resolve()));
+  });
+
+  // Scenario 18: Retry endpoint validation & concurrency
+  it("18. Retry endpoint validation & concurrency: allows retry only when Failed, preserves business status", () => {
+    // 18a. Enquiry in 'Completed' state cannot be claimed for retry
+    const completedEnquiry = createEnquiry(
+      {
+        name: "Completed User",
+        email: "completed@test.com",
+        message: "Already categorized",
+        status: "In Progress",
+        category: "Sales",
+        categorizationState: "Completed",
+      },
+      testDb
+    );
+    const claimCompleted = claimEnquiryForRetry(completedEnquiry.id, testDb);
+    expect(claimCompleted).toBe(false);
+
+    // 18b. Enquiry in 'Pending' state cannot be claimed for retry
+    const pendingEnquiry = createEnquiry(
+      {
+        name: "Pending User",
+        email: "pending@test.com",
+        message: "Currently in flight",
+        status: "New",
+        category: null,
+        categorizationState: "Pending",
+      },
+      testDb
+    );
+    const claimPending = claimEnquiryForRetry(pendingEnquiry.id, testDb);
+    expect(claimPending).toBe(false);
+
+    // 18c. Enquiry in 'Failed' state CAN be claimed for retry
+    const failedEnquiry = createEnquiry(
+      {
+        name: "Failed User",
+        email: "failed@test.com",
+        message: "Needs retry",
+        status: "In Progress", // specific business status
+        category: null,
+        categorizationState: "Failed",
+      },
+      testDb
+    );
+    const claimFailed = claimEnquiryForRetry(failedEnquiry.id, testDb);
+    expect(claimFailed).toBe(true);
+
+    // State atomically became 'Pending'
+    const afterClaim = getEnquiryById(failedEnquiry.id, testDb);
+    expect(afterClaim?.categorizationState).toBe("Pending");
+    expect(afterClaim?.status).toBe("In Progress"); // Business status preserved!
+
+    // 18d. Concurrent claim on same record immediately fails
+    const concurrentClaim = claimEnquiryForRetry(failedEnquiry.id, testDb);
+    expect(concurrentClaim).toBe(false); // Already claimed!
+  });
+
   // Extra verification: Metrics calculation
   it("Extra: Dashboard metrics calculate live counts accurately", () => {
     createEnquiry({ name: "U1", email: "u1@test.com", message: "m1", status: "New", categorizationState: "Completed" }, testDb);
@@ -669,3 +779,4 @@ describe("Intevoris Customer Enquiry Tracker — Automated Test Suite", () => {
     expect(metrics.failedCategorizationCount).toBe(1);
   });
 });
+

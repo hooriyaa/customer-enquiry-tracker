@@ -8,6 +8,12 @@ import { LayoutDashboard, PlusCircle, ShieldCheck, Cpu } from "lucide-react";
 export const metadata: Metadata = {
   title: "Intevoris AI Solutions — Customer Enquiry Tracker",
   description: "Executive Customer Enquiry Management and Intelligent AI Triage System",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

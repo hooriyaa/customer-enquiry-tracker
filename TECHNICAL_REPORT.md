@@ -46,6 +46,9 @@ The project has been built in strict accordance with the official 5-page assignm
 | **F** | **`[INVALID_ONCE]` is rejected, then recovers on retry** | Tested via Vitest test #16 and Live Audit Section 8. `[INVALID_ONCE] My login is broken.` returns `category: 'Unexpected'`, caught as `Failed`. Retry recovers to `Completed` (`Support`). Record count unchanged. | `0` | **PASS** |
 | **G** | **Status changes survive refresh** | Tested via Vitest test #11 and Live Audit Section 5. Status transitioned `New` $\rightarrow$ `In Progress` $\rightarrow$ `Resolved` via `PATCH /api/enquiries/:id`. Re-queried from disk; verified persisted. | `0` | **PASS** |
 | **H** | **Status filter returns the correct enquiries** | Tested via Vitest test #13 and Live Audit Section 6. `GET /api/enquiries?status=Resolved` isolates only resolved enquiries. | `0` | **PASS** |
+| **I** | **API Error Security & Sanitization** | Raw database errors and stack traces are suppressed in HTTP responses; diagnostic details logged server-side only. | `0` | **PASS** |
+| **J** | **AI Timeout through Body Read** | Tested via Vitest test #17. Timeout aborts cleanly if server drips or hangs on response body chunks. | `0` | **PASS** |
+| **K** | **Strict Retry Validation (Failed-Only Guard)** | Tested via Vitest test #18 and Live Audit. Completed/Pending records rejected with HTTP 400; concurrency claim guard prevents parallel execution. | `0` | **PASS** |
 
 ---
 
