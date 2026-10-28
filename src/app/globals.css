@@ -20,7 +20,7 @@
       radial-gradient(at 100% 0%, rgba(219, 234, 254, 0.3) 0px, transparent 50%),
       radial-gradient(at 50% 100%, rgba(241, 245, 249, 0.6) 0px, transparent 50%);
     background-attachment: fixed;
-    @apply text-slate-900 antialiased min-h-screen flex flex-col;
+    @apply text-slate-900 antialiased min-h-screen flex flex-col overflow-x-hidden w-full max-w-full;
   }
 
   /* Accessible classic focus rings */

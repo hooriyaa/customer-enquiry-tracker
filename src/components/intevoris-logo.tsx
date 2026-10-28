@@ -1,3 +1,4 @@
+// modified- preserved copy
 import React from "react";
 
 interface LogoProps {
@@ -10,19 +11,19 @@ export function IntevorisLogo({ variant = "light", size = "md" }: LogoProps) {
   const isDark = variant === "dark";
 
   const iconSizes = {
-    sm: "w-8 h-8",
-    md: "w-10 h-10",
-    lg: "w-12 h-12",
+    sm: "w-7 h-7 sm:w-8 sm:h-8",
+    md: "w-8 h-8 sm:w-10 sm:h-10",
+    lg: "w-10 h-10 sm:w-12 sm:h-12",
   };
 
   const titleSizes = {
-    sm: "text-sm",
-    md: "text-base sm:text-lg",
-    lg: "text-xl sm:text-2xl",
+    sm: "text-xs sm:text-sm",
+    md: "text-sm sm:text-base md:text-lg",
+    lg: "text-lg sm:text-xl md:text-2xl",
   };
 
   return (
-    <div className="flex items-center gap-3.5 group cursor-pointer">
+    <div className="flex items-center gap-2.5 sm:gap-3.5 group cursor-pointer min-w-0">
       {/* Bespoke Classic Insignia */}
       <div className={`relative ${iconSizes[size]} shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 p-2 shadow-md shadow-slate-950/15 border border-slate-700/50 group-hover:border-amber-500/40 transition-all duration-300`}>
         {/* Subtle gold inner accent glow */}
@@ -78,21 +79,21 @@ export function IntevorisLogo({ variant = "light", size = "md" }: LogoProps) {
       </div>
 
       {/* Classic Wordmark Typography */}
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <span
-            className={`font-display-brand ${titleSizes[size]} font-bold tracking-[0.18em] uppercase ${
+            className={`font-display-brand ${titleSizes[size]} font-bold tracking-[0.12em] sm:tracking-[0.18em] uppercase ${
               isDark ? "text-white" : "text-slate-900"
             }`}
           >
             Intevoris
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/30">
+          <span className="hidden min-[360px]:inline-block text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/30 shrink-0">
             AI Solutions
           </span>
         </div>
         <span
-          className={`text-[11px] tracking-wide font-medium ${
+          className={`text-[11px] tracking-wide font-medium hidden sm:block ${
             isDark ? "text-slate-400" : "text-slate-500"
           }`}
         >

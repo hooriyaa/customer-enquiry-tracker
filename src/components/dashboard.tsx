@@ -184,16 +184,16 @@ export function Dashboard() {
   return (
     <div className="space-y-6 sm:space-y-7">
       {/* Top Header & Executive Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-2 border-b border-slate-200/90">
-        <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3.5 sm:gap-4 pb-2 border-b border-slate-200/90">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-500/10 px-2 sm:px-2.5 py-0.5 rounded-full border border-amber-500/20">
               Executive Triage Control
             </span>
             <span className="text-xs text-slate-400">•</span>
-            <span className="text-xs text-slate-500 font-medium font-mono">SQLite WAL Feed</span>
+            <span className="text-[11px] sm:text-xs text-slate-500 font-medium font-mono">SQLite WAL Feed</span>
           </div>
-          <h1 className="font-serif-title text-2xl sm:text-3xl font-bold text-slate-950 tracking-tight">
+          <h1 className="font-serif-title text-xl sm:text-2xl lg:text-3xl font-bold text-slate-950 tracking-tight">
             Customer Enquiry Dashboard
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
@@ -201,23 +201,23 @@ export function Dashboard() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto shrink-0">
           <button
             type="button"
             onClick={() => fetchEnquiries(true)}
             disabled={isRefreshing}
-            className="inline-flex items-center gap-2 px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl text-xs font-semibold shadow-xs hover:shadow transition-all duration-150 cursor-pointer disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 px-3 sm:px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl text-xs font-semibold shadow-xs hover:shadow transition-all duration-150 cursor-pointer disabled:opacity-50 min-h-[40px]"
             title="Refresh database records"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin text-amber-600" : "text-slate-500"}`} />
+            <RefreshCw className={`w-3.5 h-3.5 shrink-0 ${isRefreshing ? "animate-spin text-amber-600" : "text-slate-500"}`} />
             <span>{isRefreshing ? "Refreshing..." : "Refresh"}</span>
           </button>
 
           <Link
             href="/submit"
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all duration-150 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all duration-150 cursor-pointer min-h-[40px]"
           >
-            <PlusCircle className="w-4 h-4 text-amber-400" />
+            <PlusCircle className="w-4 h-4 text-amber-400 shrink-0" />
             <span>New Enquiry</span>
           </Link>
         </div>
@@ -236,7 +236,7 @@ export function Dashboard() {
       {actionSuccessMessage && (
         <div
           role="status"
-          className="p-4 bg-emerald-50/90 border border-emerald-300 rounded-2xl text-emerald-900 text-sm font-medium flex items-center gap-2.5 shadow-sm animate-in fade-in duration-150"
+          className="p-3.5 sm:p-4 bg-emerald-50/90 border border-emerald-300 rounded-2xl text-emerald-900 text-xs sm:text-sm font-medium flex items-center gap-2.5 shadow-sm animate-in fade-in duration-150"
         >
           <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
           <span>{actionSuccessMessage}</span>
@@ -246,7 +246,7 @@ export function Dashboard() {
       {errorMessage && (
         <div
           role="alert"
-          className="p-4 bg-rose-50/90 border border-rose-300 rounded-2xl text-rose-900 text-sm font-medium flex items-center gap-2.5 shadow-sm animate-in fade-in duration-150"
+          className="p-3.5 sm:p-4 bg-rose-50/90 border border-rose-300 rounded-2xl text-rose-900 text-xs sm:text-sm font-medium flex items-center gap-2.5 shadow-sm animate-in fade-in duration-150"
         >
           <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0" />
           <span>{errorMessage}</span>
@@ -256,14 +256,14 @@ export function Dashboard() {
       {/* Filter and Search Controls Bar */}
       <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
         {/* Search Input */}
-        <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 w-full md:max-w-md">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by customer name, email, or message..."
-            className="w-full pl-9 pr-12 py-2.5 rounded-xl border border-slate-300/80 bg-slate-50/50 hover:bg-white text-sm text-slate-900 placeholder-slate-400 transition-colors focus:bg-white focus:border-slate-900 focus:ring-slate-900"
+            className="w-full pl-9 pr-12 py-2.5 rounded-xl border border-slate-300/80 bg-slate-50/50 hover:bg-white text-sm text-slate-900 placeholder-slate-400 transition-colors focus:bg-white focus:border-slate-900 focus:ring-slate-900 min-h-[42px]"
           />
           <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] text-slate-400 font-mono bg-white border border-slate-200 rounded absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
             /
@@ -271,14 +271,13 @@ export function Dashboard() {
         </div>
 
         {/* Filter Dropdowns */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:flex md:flex-wrap md:items-center gap-2 w-full md:w-auto">
           {/* Status Filter */}
-          <div className="flex items-center gap-1.5 text-xs text-slate-600">
-            <Filter className="w-3.5 h-3.5 text-slate-500" />
+          <div className="w-full md:w-auto">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as BusinessStatus | "ALL")}
-              className="px-3 py-2 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900"
+              className="w-full md:w-auto px-3 py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[42px]"
               aria-label="Filter by business status"
             >
               <option value="ALL">All Statuses</option>
@@ -291,41 +290,45 @@ export function Dashboard() {
           </div>
 
           {/* Category Filter */}
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value as EnquiryCategory | "ALL")}
-            className="px-3 py-2 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900"
-            aria-label="Filter by category"
-          >
-            <option value="ALL">All Categories</option>
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                Category: {c}
-              </option>
-            ))}
-          </select>
+          <div className="w-full md:w-auto">
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value as EnquiryCategory | "ALL")}
+              className="w-full md:w-auto px-3 py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[42px]"
+              aria-label="Filter by category"
+            >
+              <option value="ALL">All Categories</option>
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  Category: {c}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {/* State Filter */}
-          <select
-            value={stateFilter}
-            onChange={(e) => setStateFilter(e.target.value as CategorizationState | "ALL")}
-            className="px-3 py-2 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900"
-            aria-label="Filter by AI categorization state"
-          >
-            <option value="ALL">All AI States</option>
-            {CATEGORIZATION_STATES.map((st) => (
-              <option key={st} value={st}>
-                AI State: {st}
-              </option>
-            ))}
-          </select>
+          <div className="w-full md:w-auto">
+            <select
+              value={stateFilter}
+              onChange={(e) => setStateFilter(e.target.value as CategorizationState | "ALL")}
+              className="w-full md:w-auto px-3 py-2.5 rounded-xl border border-slate-300/80 bg-white text-xs font-semibold text-slate-700 cursor-pointer shadow-2xs hover:border-slate-400 transition-colors focus:border-slate-900 focus:ring-slate-900 min-h-[42px]"
+              aria-label="Filter by AI categorization state"
+            >
+              <option value="ALL">All AI States</option>
+              {CATEGORIZATION_STATES.map((st) => (
+                <option key={st} value={st}>
+                  AI State: {st}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {/* Reset Filters */}
           {(statusFilter !== "ALL" || categoryFilter !== "ALL" || stateFilter !== "ALL" || searchQuery) && (
             <button
               type="button"
               onClick={handleResetFilters}
-              className="text-xs text-amber-700 hover:text-amber-900 font-bold px-2.5 py-1.5 rounded-lg hover:bg-amber-50 transition-colors cursor-pointer"
+              className="w-full sm:col-span-3 md:w-auto text-xs text-amber-700 hover:text-amber-900 font-bold px-3 py-2 rounded-lg hover:bg-amber-50 transition-colors cursor-pointer text-center min-h-[38px] flex items-center justify-center"
             >
               Reset Filters
             </button>
@@ -336,7 +339,7 @@ export function Dashboard() {
       {/* Enquiries Listing Container */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
         {/* Header Bar */}
-        <div className="px-5 py-3.5 border-b border-slate-200/90 flex items-center justify-between text-xs text-slate-500 bg-slate-50/70">
+        <div className="px-4 sm:px-5 py-3 sm:py-3.5 border-b border-slate-200/90 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 bg-slate-50/70">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-800">
               {enquiries.length} {enquiries.length === 1 ? "Customer Record" : "Customer Records"}
@@ -344,7 +347,7 @@ export function Dashboard() {
             <span className="text-slate-300">|</span>
             <span className="text-slate-500 text-[11px]">Sorted Newest First</span>
           </div>
-          {lastRefreshedAt && <span className="font-mono text-[11px]">Last sync: {lastRefreshedAt}</span>}
+          {lastRefreshedAt && <span className="font-mono text-[11px] text-slate-400">Last sync: {lastRefreshedAt}</span>}
         </div>
 
         {/* Loading State */}
@@ -502,51 +505,62 @@ export function Dashboard() {
               </table>
             </div>
 
-            {/* Mobile / Tablet Card View */}
+            {/* Mobile & Tablet Card View */}
             <div className="lg:hidden divide-y divide-slate-100">
               {enquiries.map((enquiry) => (
-                <div key={enquiry.id} className="p-4 space-y-3 hover:bg-slate-50/60 transition-colors">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <div className="font-semibold text-slate-900 text-sm flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-slate-400" />
-                        {enquiry.name}
+                <div key={enquiry.id} className="p-3.5 sm:p-5 space-y-3 hover:bg-slate-50/60 transition-colors">
+                  {/* Customer Header */}
+                  <div className="flex items-start justify-between gap-2 min-w-0">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200/90 text-slate-700 flex items-center justify-center font-bold text-xs uppercase shrink-0">
+                        {enquiry.name.slice(0, 2)}
                       </div>
-                      <div className="text-xs text-slate-500 font-mono flex items-center gap-1.5 mt-0.5">
-                        <Mail className="w-3.5 h-3.5 text-slate-400" />
-                        {enquiry.email}
+                      <div className="min-w-0">
+                        <div className="font-semibold text-slate-900 text-sm truncate leading-tight">
+                          {enquiry.name}
+                        </div>
+                        <div className="text-xs text-slate-500 font-mono truncate mt-0.5">
+                          {enquiry.email}
+                        </div>
                       </div>
                     </div>
 
-                    <div className="text-right text-xs text-slate-500 flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                      {new Date(enquiry.createdAt).toLocaleDateString(undefined, {
-                        month: "short",
-                        day: "numeric",
-                      })}
+                    <div className="text-right text-[11px] sm:text-xs text-slate-500 flex items-center gap-1 shrink-0 pt-0.5">
+                      <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>
+                        {new Date(enquiry.createdAt).toLocaleDateString(undefined, {
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-700 line-clamp-2 bg-slate-50/80 p-3 rounded-xl border border-slate-200/80 leading-relaxed">
+                  {/* Message Preview */}
+                  <p className="text-xs text-slate-700 line-clamp-2 bg-slate-50/80 p-2.5 sm:p-3 rounded-xl border border-slate-200/80 leading-relaxed break-words">
                     {enquiry.message}
                   </p>
 
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                  {/* Badges & Operational Actions */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-1">
+                    {/* Triage Badges */}
                     <div className="flex flex-wrap items-center gap-1.5">
                       <CategoryBadge category={enquiry.category} size="sm" />
                       <CategorizationStateBadge state={enquiry.categorizationState} size="sm" />
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    {/* Operational Controls */}
+                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto justify-end">
                       {enquiry.categorizationState === "Failed" && (
                         <button
                           type="button"
                           onClick={() => handleRetryCategorization(enquiry.id)}
                           disabled={retryingId === enquiry.id}
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 rounded-lg text-xs font-bold transition-colors cursor-pointer disabled:opacity-50 min-h-[36px] shrink-0"
+                          title="Retry AI Categorization for this record"
                         >
-                          <RotateCw className={`w-3 h-3 text-rose-600 ${retryingId === enquiry.id ? "animate-spin" : ""}`} />
-                          Retry AI
+                          <RotateCw className={`w-3 h-3 text-rose-600 shrink-0 ${retryingId === enquiry.id ? "animate-spin" : ""}`} />
+                          <span>Retry</span>
                         </button>
                       )}
 
@@ -554,7 +568,7 @@ export function Dashboard() {
                         value={enquiry.status}
                         disabled={updatingStatusId === enquiry.id}
                         onChange={(e) => handleStatusChange(enquiry.id, e.target.value as BusinessStatus)}
-                        className={`text-xs font-bold rounded-lg px-2.5 py-1.5 border transition-colors cursor-pointer ${
+                        className={`flex-1 sm:flex-initial text-xs font-bold rounded-lg px-2.5 py-1.5 border transition-colors cursor-pointer min-h-[36px] min-w-[110px] ${
                           enquiry.status === "New"
                             ? "bg-blue-50 text-blue-900 border-blue-200"
                             : enquiry.status === "In Progress"
@@ -573,9 +587,10 @@ export function Dashboard() {
                       <button
                         type="button"
                         onClick={() => setSelectedEnquiry(enquiry)}
-                        className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-lg text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                        className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-lg text-xs font-semibold shadow-2xs transition-colors cursor-pointer min-h-[36px] shrink-0"
                       >
-                        View
+                        <Eye className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                        <span>View</span>
                       </button>
                     </div>
                   </div>
